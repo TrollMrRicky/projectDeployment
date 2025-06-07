@@ -30,7 +30,7 @@ class Theory():
     def __init__(self, content: str):
         self.content = content
 
-class Student(UserMixin):
+class Student():
     def __init__(self, studentID: int, username: str, password: str, photoURI: str):
         self.studentID = studentID
         self.username = username
