@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Karaoke</title>
+    <link rel="stylesheet" href="/static/css/karaoke.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    {% include "header.html" %}
+
+    <div class="karaoke-wrapper">
+        <div id="mainStuff" class="mainStuff">
+            <video id="video" width="500">
+                <source src="/static/assets/{{ songID }}.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <audio id="audio" hidden></audio>
+
+            <div class="button-row">
+                <button id="start" class="startSinging">Start</button>
+                <button id="stop" class="stopSinging">Stop</button>
+            </div>
+
+        </div>
+        
+        <div id="loadingStuff" class="loadingStuff">
+            <div id="loader" class="loader"></div>
+            <div id="loadingText" class="loadingText"></div>
+        </div>
+
+        <div id="scoreStuff" class="scoreStuff" hidden>
+            <div id="rank" class="rank"></div>
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+        <script>
+            let constraintObj = {
+                audio: true,
+                video: false
+            }
+
+            navigator.mediaDevices.getUserMedia(constraintObj)
+            .then(function(mediaStreamObj) {
+                //connect the media stream to the first video element
+                let audio = document.getElementById("audio")
+                if ("srcObject" in audio) {
+                    audio.srcObject = mediaStreamObj;
+                } else {
+                    //old version
+                    audio.src = window.URL.createObjectURL(mediaStreamObj);
+                }
+            //Karaoke Page Elements    
+            const stopButton = document.getElementById("stop");
+            const startButton = document.getElementById("start");
+            const video = document.getElementById("video");
+            
+            const mainStuff = document.getElementById("mainStuff")
+            let mediaRecorder = new MediaRecorder(mediaStreamObj)
+            let chunks = [];
+
+            //Loader elements
+            const loader = document.getElementById("loader");
+            const loaderMessage = document.getElementById("loadingText");
+            const loaderDiv = document.getElementById("loadingStuff");
+
+            //Result Screen Elements
+            const scoreDiv = document.getElementById("scoreStuff");
+            const rank = document.getElementById("rank");
+            const message = document.getElementById("message");
+
+            video.loadeddata  = function(ev) {
+                console.log("Ready to play");
+                startButton.disabled = false;
+            }
+            startButton.addEventListener("click", () =>{
+                mediaRecorder.start();
+                video.currentTime = 0;
+                video.play();
+                console.log(mediaRecorder.state);
+                startButton.disabled = true
+            });
+
+            mediaRecorder.ondataavailable = function(ev) {
+                chunks.push(ev.data);
+            }
+            
+            stopButton.addEventListener("click", stopRecording);
+
+            video.onended = stopRecording;
+
+            function stopRecording() {
+                if (mediaRecorder.state != "inactive") {
+                    loaderDiv.classList.add("show");
+                    loaderMessage.innerHTML = "Listening to your beautiful voice";
+                    mainStuff.style.display = "none";
+                    video.pause();
+                    mediaRecorder.stop();
+                }
+            }
+
+            mediaRecorder.onstop = function(ev) {
+                console.log(chunks);
+                let blob = new Blob(chunks, {'type' : 'audio/webm'})
+                var data = new FormData()
+                data.append('audio', blob, 'recording.webm')
+            
+                fetch('/menu/karaoke/upload', {
+
+                    // HTTP request type
+                    method: "POST",
+        
+                    // Sending our blob with our request
+                    body: data
+                })
+                .then(response => response.json())
+                .then(data => {
+                //Handle transition to score screen
+                    loaderDiv.classList.remove("show");
+                    rank.innerHTML = data.rank;
+                    message.innerHTML = data.message;
+                    scoreDiv.hidden = false;
+                })
+                .catch(error => {
+                    console.error("Upload failed", err);
+                    alert("There was an error uploading your performance.");
+                    loaderDiv.classList.remove("show");
+                })
+            }
+        })
+        .catch(error => {
+            //User denied permisson
+            console.error("Microphone access denied", error);
+            alert("Microphone access is required for karaoke.");
+        })
+        </script>
+    </body>
+</html>

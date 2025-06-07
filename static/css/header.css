@@ -1,0 +1,94 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(#3ea8ff, #9198e5);
+  padding: 1rem 1rem 0 1rem;
+}
+
+li {
+  text-align: right;
+  list-style: none;
+  display: inline-block; /* Use inline-block to let content size it naturally */
+  margin-right: 10px;
+}
+
+li:last-child {
+  margin-right: 0;
+}
+
+.username {
+  display: inline-block;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+
+li a,
+li span {
+  color: rgb(211, 211, 211); 
+  font-size: 18px;
+  font-weight: 300;
+  margin-right: 25px;
+  text-decoration: none;
+  margin-right: 25px; /* ← too wide if you're using inline list items */
+
+}
+
+li a:hover {
+  color: #3ea8ff;
+}
+
+.navBar {
+  font-family: Arial, Helvetica, sans-serif;
+  height: 80px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.navDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3a3a3a;
+  padding: 0;
+  height: 80px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.logo a {
+  font-size: 32px;
+  font-weight: 600;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: transparent; /* Consider removing grey if not needed */
+  height: 80px; /* Match nav height */
+  box-sizing: border-box;
+}
+
+.mascot {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  margin-right: 10px;
+  padding: 0;
+}
+
+a .username {
+  color: inherit;
+}
+
+ul {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  gap: 12px; /* consistent spacing */
+}

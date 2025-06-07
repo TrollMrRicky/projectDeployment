@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width" inital-scale="1">
+        <link rel="stylesheet" href="/static/css/quiz.css">
+    </head>
+
+    <body>
+        {% include 'header.html' %}
+        <div class="app">
+            <h1>Quiz</h1>
+            <div class="quiz">
+                <h2 id="question">Which word has this definition: {{ definition }}</h2>
+                <div id="answer-buttons">
+                  <input type="hidden" name="answer" value="{{ definition }}"></div>
+                  <button class="btn" value="{{ option1 }}" data-answer="1" type="submit" name="action">{{ option1 }}</button>
+                  <button class="btn" value="{{ option2 }}" data-answer="2" type="submit" name="action">{{ option2 }}</button>
+                  <button class="btn" value="{{ option3 }}" data-answer="3" type="submit" name="action">{{ option3 }}</button>
+                  <button class="btn" value="{{ option4 }}" data-answer="4" type="submit" name="action">{{ option4 }}</button>
+                </div>
+
+                <script>
+                  //SCRIPT FOR HANDLING OPTION PRESSED
+                  const optionButtons = document.querySelectorAll(".btn");
+                  const wordDef = "{{definition}}";
+                  //Add the click event to each button
+                  optionButtons.forEach(btn => {
+                    btn.addEventListener("click", () => {
+                      //Pick the number button that was pressed
+                      const selectedButton = btn.getAttribute("data-answer");
+                      //Define the word that was selected
+                      const wordSelected = btn.value;
+                      //Send what button is pressed, what the current definition is, and what position the user selected
+                      fetch("/submit-answer", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({"definition": wordDef, "userSelected": selectedButton, "term": wordSelected})
+                      })
+                      //Await for the backend to process the answer
+                      .then(response => response.json())
+                      .then(data => {
+                      //Display the correct answer
+                        optionButtons.forEach(btn => {
+                          const currentButtonOption = btn.value
+                          if (currentButtonOption === data.correctTerm) {
+                            btn.classList.add("correct");
+                          }
+                          else if (btn.getAttribute("data-answer") === selectedButton && wordSelected != data.correctTerm) {
+                            btn.classList.add("wrong");
+                          }
+                        })
+                        
+                        //Display next button
+                        const nextButton = document.getElementById("next-button");
+                        nextButton.style.display = 'block';
+                        //Deactivate all buttons
+                        btn.disabled = true;
+                      })
+                    });                      
+                  })
+
+                
+                </script>
+                <a href="/menu/quiz"><button id="next-button" >Next</button></a>
+            </div>
+        </div>
+    </body>
+</html>

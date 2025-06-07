@@ -1,0 +1,63 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(#3ea8ff, #9198e5);
+  font-family: Helvetica, sans-serif;
+  color: rgb(211, 211, 211);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.homeContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+  gap: 2rem;
+}
+
+.mascotImage {
+  width: 150px;
+  height: auto;
+}
+
+.homeForm {
+  background-color: #3a3a3a;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 600px;
+}
+
+.homeTitle {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.homeButton {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: 2px solid rgb(211, 211, 211);
+  background-color: rgb(211, 211, 211);
+  color: #3a3a3a;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.homeButton:hover {
+  background-color: #918686;
+  color: #000000;
+}

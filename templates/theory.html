@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/css/theory.css"/>
+        <title>Theory</title>
+    </head>
+
+    <body>
+        {% include 'header.html' %}
+
+        <div class="theoryContainer">
+            {% if not message %}
+                <h1 class="termTitle">{{ term }}</h1>
+                {% for i in theory %}
+                    <p class="theoryText">{{ i }}</p>
+                {% endfor %}
+            {% else %}
+                <p class="message">{{ message }}</p>
+            {% endif %}
+
+            {% if not message %}
+            <form method="POST" class="nextForm">
+                <button type="submit" class="nextButton">Next Word</button>
+            </form>
+            {% endif %}
+        </div>
+    </body>
+</html>

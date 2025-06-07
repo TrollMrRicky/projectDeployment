@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/css/home.css"/>
+        <title>Home</title>
+    </head>
+        
+    <body>
+        {% include 'header.html' %}
+        
+        <div class="homeContainer">
+            <img src="/static/assets/micLogo.png" alt="Mascot" class="mascotImage">
+            
+            <form method="post" class="homeForm">
+                <h1 class="homeTitle">Let's learn Japanese by singing your favourite songs!</h1>
+                <button type="submit" class="homeButton">Click here to start!</button>
+            </form>
+        </div>
+    </body>
+</html>

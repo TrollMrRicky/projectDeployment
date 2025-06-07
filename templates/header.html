@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width" inital-scale="1">
+        <link rel="stylesheet" href="/static/css/header.css"/>
+    </head>
+        
+    <body>
+        <nav class="navBar">
+            <div class="navDiv">
+                <div class="logo">
+                    <a href="{{url_for('menu')}}">
+                    <img class="mascot" src="/static/assets/micHeader.png" alt="Mascot">
+                    UTAITE</a>
+                </div>
+                    
+                <ul>
+                    {% if user %}
+                    <li>
+                        <a href="{{ url_for('homepage') }}">
+                        Logged In:
+                        <span class="username" title="{{ user }}">{{ user }}</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li><span>Not Logged In</span></li>
+                    {% endif %}
+                    {% if song %}
+                    <li>
+                        <a href="{{url_for('changeSong')}}">{{ song }}</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <span>No Song Selected</span>
+                    </li>
+                    {% endif %}
+                    <li><a href="{{url_for('logout')}}">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </body>
+</html>

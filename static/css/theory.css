@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: radial-gradient(#3ea8ff, #9198e5);
+    font-family: Helvetica, sans-serif;
+    color: rgb(211, 211, 211);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.theoryContainer {
+    background-color: #3a3a3a;
+    margin-top: 4rem;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    max-width: 800px;
+    width: 90%;
+    text-align: center;
+}
+
+.termTitle {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.theoryText {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.message {
+    font-size: 1.2rem;
+    color: rgb(240, 240, 240);
+}
+
+.nextForm {
+    margin-top: 1rem;
+}
+
+.nextButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: 2px solid rgb(211, 211, 211);
+    background-color: rgb(211, 211, 211);
+    color: #3a3a3a;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nextButton:hover {
+    background-color: #918686;
+    color: #000000;
+}

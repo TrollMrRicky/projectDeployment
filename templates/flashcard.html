@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width"/>
+        <title>Flashcards</title> 
+        <link rel="stylesheet" href="/static/css/flashcard.css"/>
+
+    </head>
+    <body>
+        {% include 'header.html' %}
+        <div class="mainContent">
+            <div id="container" class="container">
+                <div id ="card" class="card">
+                    <div class="front">
+                        <h1 class="word text" id="word">{{word}}</h1>
+                    </div>
+                    <div class="back">
+                        <h1 id="word" class="text">{{word}}</h1>
+                        <h2 id="def" class="text">{{definition}}</h2>
+                        <p id="read" class="text">{{reading}}</p>
+                        <p id="sent" class="text">{{sentence}}</p>
+                        <p id="tl" class="text">{{translated}}</p>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button id="answerButton" data-answer="1" class="yes">✅</button>
+                    <button id="answerButton" data-answer="2" class="no">❌</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            const container = document.getElementById("container");
+            const card = document.getElementById("card");
+            const word = document.querySelectorAll("#word");
+            const def = document.getElementById("def");
+            const read = document.getElementById("read");
+            const sent = document.getElementById("sent");
+            const tl = document.getElementById("tl");
+
+            //The flashcard elements
+            let side = 0
+            function flipCard() {
+                if (side == 0) {
+                    card.style.transform = "rotateY(180deg)";
+                    side = 1;
+                }
+                else {
+                    card.style.transform = "rotateY(0deg)";
+                    side = 0;
+                }
+            }
+            card.addEventListener("click", flipCard);
+
+            //The buttons
+            const buttons = document.querySelectorAll("#answerButton");
+            buttons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    console.log("clicked!");
+                    buttons.forEach(button => {
+                        button.disabled = true
+                    });
+                    let answer; 
+                    buttonClicked = btn.getAttribute("data-answer");
+                    if (buttonClicked == "1") {
+                        answer = "yes";
+                    }
+                    else if (buttonClicked == "2") {
+                        answer = "no";
+                    }
+                    else {
+                        console.log("How did we get here");
+                    }
+
+                    fetch("/flashcard-check", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({"response": answer})
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data["finished"]) {
+                            //Setting the new flashcard
+                            word.forEach(wrd => {
+                                wrd.innerHTML = data["term"];
+                            });
+                            def.innerHTML = data["definition"];
+                            read.innerHTML = data["reading"];
+                            sent.innerHTML = data["sentence"];
+                            tl.innerHTML = data["translated"];
+                            
+                            side = 0;
+                            card.style.transform = "rotateY(0deg)";
+
+                            buttons.forEach(btn => {
+                                btn.disabled = false
+                            });
+                        }
+                        else {
+                            word.forEach(wrd => {
+                                wrd.innerHTML = data["title"]
+                            });
+                            def.innerHTML = "";
+                            read.innerHTML = "";
+                            sent.innerHTML = "";
+                            tl.innerHTML = "";
+                            card.style.transform = "rotateY(180deg)";
+                            card.removeEventListener("click", flipCard)
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

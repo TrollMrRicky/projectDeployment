@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../static/css/songselect.css"/>
+        <title>Select Song</title>
+    </head>
+        
+    <body>
+        {% include 'header.html' %}
+        <div class="songSelectContainer">
+            <h1>Select your song</h1>
+            <form class="songForm" method="POST">
+                <div class="songButtons">
+                    {% for song in songList %}
+                        <button type="submit" name="songs" value="{{ song.songID }}" class="songButton">{{ song.title }}</button>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

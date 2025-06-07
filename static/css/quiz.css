@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(93, 191, 244);
+}
+
+.app {
+    background: white;
+    width: 90%;
+    max-width: 600px;
+    margin: 100px auto 0px;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.app h1 {
+    font-weight: 25px;
+    color: black;
+    border-bottom: 1px solid;
+    padding-bottom: 5px;
+}
+
+.quiz {
+    padding: 20px 0px;
+}
+
+.quiz h2 {
+    font-size: 18px;
+}
+
+.btn {
+    background-color: white;
+    color: #222;
+    font-weight: 500;
+    width: 100%;
+    border: 1px solid;
+    padding: 10px;
+    margin: 10px 0px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover:active {
+    background-color: whitesmoke;
+}
+
+#next-button {
+    background-color: lightblue;
+    width: 150px;
+    display: none;
+    padding: 10px;
+    margin: 20px auto 0px;
+}
+
+.correct {
+    background-color: lightgreen;
+}
+
+.wrong {
+    background-color: salmon;
+}

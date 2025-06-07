@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../static/css/menu.css"/>
+        <title>Menu</title>
+    </head>
+        
+    <body>
+        {% include 'header.html' %}
+
+        <div class="menuContainer">
+            <form method="POST" class="menuForm">
+                <h1 class="menuTitle">Select your activity</h1>
+                <div class="menuGrid">
+                    <div class="tooltip">
+                        <button type="submit" class="theory optionButton" name="action" value="theory" {% if not theory %} disabled {% endif %}>Learn New Words</button>
+                        <span class="tooltipText" id="theoryTooltip">{% if not theory %}Theory is locked{% else %}Learn some new words!{% endif %}</span> 
+                    </div>
+
+                    <div class="tooltip">
+                        <button type="submit" class="flashcard optionButton" name="action" value="flashcards" {% if not flashcard %} disabled {% endif %}>Flashcards</button>
+                        <span class="tooltipText" id="flashcardTooltip">{% if not flashcard %}Flashcard is locked. Learn at least one word in theory{% else %}Memorise some words!{% endif %}</span>                         
+                    </div>
+
+                    <div class="tooltip">
+                        <button type="submit" class="quiz optionButton" name="action" value="quiz"  {% if not quiz %} disabled {% endif %}>Quiz</button>
+                        <span class="tooltipText" id="quizTooltip">{% if not quiz %}Quiz is locked. Learn at least 10 words in your flashcards first{% else %}Lets test your knowledge!{% endif %}</span>                         
+
+                    </div>
+                    
+                    <div class="tooltip">
+                        <button type="submit" class="karaoke optionButton" name="action" value="karaoke"  {% if not sing %} disabled {% endif %}>Sing!</button>
+                        <span class="tooltipText" id="singTooltip">{% if not sing %}Karaoke is locked. Learn at least 10 words completely to unlock{% else %}Lets sing!{% endif %}</span>
+                    </div>
+                    
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
