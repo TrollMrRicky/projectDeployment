@@ -1,8 +1,6 @@
-*.db
 *.sqbpro
 *.sql
 lyricmapping.csv
-/static/assets
 /uploads
 /flaskapp
 /__pycache__
