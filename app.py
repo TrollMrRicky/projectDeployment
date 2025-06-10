@@ -13,7 +13,7 @@ def homepage():
     if request.method == "POST":
         return redirect("/login")
     else:
-        return render_template("home.html", user = session.get("user"), song = session.get("user"))
+        return render_template("home.html", user = session.get("user"), song = session.get("song"))
 
 @app.route("/login", methods=["GET", "POST"]) # Route for login
 def login():
@@ -27,7 +27,7 @@ def login():
         if request.form["action"] == "register":
             state = model.registerNewStudent(username, password)
             if state[0] == "Success":
-                session.get("user") = username
+                session["user"] = username
                 session["userID"] = state[1]
                 return redirect("/songSelect")
             elif state == "This user already exists":
@@ -41,7 +41,7 @@ def login():
             if state == "Incorrect Login":
                 return render_template("login.html", message="Incorrect Username or Password")
             else:
-                session.get("user") = username
+                session["user"] = username
                 session["userID"] = state.studentID
                 return redirect("/songSelect")
         else:
@@ -57,8 +57,8 @@ def songSelect():
     if session.get("song") != None:
         return redirect(url_for("menu"))
     if request.method == "POST":
-        session.get("songID") = request.form["songs"]
-        session.get("song") = model.getSong(session.get("songID")).title
+        session["songID"] = request.form["songs"]
+        session["song"] = model.getSong(session.get("songID")).title
         return redirect("/menu")
 
     else:
@@ -78,9 +78,9 @@ def menu():
         session.pop("quizPointer")
 
     #Check which buttons to lock
-    flashCardWords = model.getCurrentFlashcards(session["userID"], session.get("songID"))
-    quizWord = model.getQuizWords(session["userID"], session.get("songID"))
-    singWord = model.getLearntWords(session["userID"], session.get("songID"))
+    flashCardWords = model.getCurrentFlashcards(session.get("userID"), session.get("songID"))
+    quizWord = model.getQuizWords(session.get("userID"), session.get("songID"))
+    singWord = model.getLearntWords(session.get("userID"), session.get("songID"))
     if len(flashCardWords) < 1:
         flashcardEnabled = False
     else: flashcardEnabled = True
@@ -137,7 +137,7 @@ def logout():
 
 @app.route("/changeSong")
 def changeSong():
-    session.get("song") = None
+    session["song"] = None
     return redirect("/songSelect")
 
 
@@ -171,7 +171,6 @@ def flashcardCheck():
 
     if data["response"] == "yes":
         model.updateFlashcardScore(session["userID"], currentWord.wordID, 1)
-        flashcardArray.remove(currentWord.wordID)
         session["flashcardStuff"] = flashcardArray
     elif data["response"] == "no":
         pass
