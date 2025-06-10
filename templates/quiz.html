@@ -24,6 +24,7 @@
                   //SCRIPT FOR HANDLING OPTION PRESSED
                   const optionButtons = document.querySelectorAll(".btn");
                   const wordDef = "{{definition}}";
+                  const title = document.getElementById("question");
                   //Add the click event to each button
                   optionButtons.forEach(btn => {
                     btn.addEventListener("click", () => {
@@ -51,16 +52,19 @@
                           }
                         })
                         
-                        //Display next button
-                        const nextButton = document.getElementById("next-button");
-                        nextButton.style.display = 'block';
+                        if (data.finished) {
+                          title.innerHTML = "You've completed all the words"
+                        }
+                        else {
+                          //Display Next Button
+                          const nextButton = document.getElementById("next-button");
+                          nextButton.style.display = 'block';
+                        }
                         //Deactivate all buttons
                         btn.disabled = true;
                       })
                     });                      
                   })
-
-                
                 </script>
                 <a href="/menu/quiz"><button id="next-button" >Next</button></a>
             </div>

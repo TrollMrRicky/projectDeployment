@@ -10,11 +10,11 @@ key = 'key goes here'
 
 @app.route("/", methods=["GET", "POST"]) # Route for the homepage
 def homepage():
-    if request.method == "GET":
-        return render_template("home.html")
-    elif request.method == "POST":
+    if request.method == "POST":
         return redirect("/login")
-    
+    else:
+        return render_template("home.html", user = session["user"], song = session["song"])
+
 @app.route("/login", methods=["GET", "POST"]) # Route for login
 def login():
     if session.get("user") != None:
@@ -47,7 +47,7 @@ def login():
         else:
             return "bad parameter" # This is impossible (redundant line but whatever)
     else:
-        return render_template("login.html")
+        return render_template("login.html", user = session["user"], song = session["song"])
 
 
 @app.route("/songSelect", methods=["GET", "POST"]) # Route for song select page
@@ -63,7 +63,7 @@ def songSelect():
 
     else:
         songList = model.getAllSongs()
-        return render_template("songselect.html", songList = songList, user=session["user"])
+        return render_template("songselect.html", songList = songList, user = session["user"], song = session["song"])
     
 @app.route("/menu", methods=["GET", "POST"]) # Main menu route
 def menu():
@@ -137,7 +137,7 @@ def logout():
 
 @app.route("/changeSong")
 def changeSong():
-    session["song"] == None
+    session["song"] = None
     return redirect("/songSelect")
 
 
@@ -201,10 +201,6 @@ def quiz():
     else:
         quizArray = session["quizStuff"]
 
-    print(quizArray)
-
-    if len(quizArray) < 10:
-        return redirect("/menu")
     optionsArray = quizArray
 
     correctWord = model.getWord(quizArray[session["quizPointer"]])
@@ -238,8 +234,7 @@ def answer():
 
     if session["quizPointer"] >= len(session["quizStuff"]) - 1:
         #we finished all the words for now
-        #remember to give a finished screen
-        session["quizPointer"] = 0
+        return jsonify({"finished": True, "correctTerm": model.getWord(correctResponse).term})
     else:
         session["quizPointer"] = session["quizPointer"] + 1
     return jsonify({"correctTerm": model.getWord(correctResponse).term})

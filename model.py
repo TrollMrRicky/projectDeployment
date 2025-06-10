@@ -1,4 +1,4 @@
-import sqlite3, datetime, random
+import sqlite3, datetime
 import common
 
 def createConnection():
@@ -45,7 +45,7 @@ def registerNewStudent(username: str, password: str):
             return "This user already exists"
     except Exception as e:
         print("Except in registerNewStudent")
-        return repr(e)
+        
     finally:
         con.close()
 
@@ -66,8 +66,7 @@ def loginStudent(username:str, password:str):
             return getUserDetails(student[0])
 
     except Exception as e:
-        print("Except in loginStudent")
-        return repr(e)         
+        print("Except in loginStudent")         
     finally:
         con.close()
 
@@ -88,8 +87,7 @@ def updateProfilePhoto(UserID: int, photoURI: str):
         return "success"
     except Exception as e:
         print("Except")
-        return repr(e)
-    
+
 def updateProfileSettings(UserID: int, settings: common.Settings):
     """Takes a settings object and replaces a user's current settings with the new settings object"""
     con = createConnection()
@@ -103,10 +101,10 @@ def updateProfileSettings(UserID: int, settings: common.Settings):
         return "success"
     except Exception as e:
         print("Except")
-        return repr(e)
+        
     finally:
         con.close()
-    
+
 def updateTheoryScore(UserID: int, wordID: int, score: int):
     con = createConnection()
     cur = con.cursor()
@@ -120,7 +118,7 @@ def updateTheoryScore(UserID: int, wordID: int, score: int):
         return "Success"
     except Exception as e:
         print("Except in updateTheoryScore")
-        return repr(e)        
+                
     finally:
         con.close()
 
@@ -138,7 +136,7 @@ def resetVocabulary(UserID: int):
         return "Success"
     except Exception as e:
         print("Except")
-        return repr(e)        
+                
     finally:
         con.close()
 
@@ -160,7 +158,7 @@ def updateFlashcardScore(UserID: int, wordID: int, score: int):
         con.commit()
     except Exception as e:
         print("Except in updateFlashcardScore")
-        return repr(e)        
+                
     finally:
         con.close()
 
@@ -175,7 +173,7 @@ def updateQuizScore(UserID: int, wordID: int, score:int):
         con.commit()
     except Exception as e:
         print("Except in updateQuizScore")
-        return repr(e)        
+                
     finally:
         con.close()
 
@@ -199,7 +197,7 @@ def getWordIncorrectOptions(wordID: int, type: str):
     
     except Exception as e:
         print("Except in getWordIncorrectOptions")
-        return repr(e)        
+                
     finally:
         con.close()
 
@@ -231,10 +229,10 @@ def getSong(songID: int):
 
     except Exception as e:
         print("Except in getSong")
-        return repr(e)        
+                
     finally:
         con.close()
-    
+
 def getWord(wordID: int):
     con = createConnection()
     cur = con.cursor()
@@ -248,8 +246,8 @@ def getWord(wordID: int):
     
     except Exception as e:
         print("Except in getWord")
-        print(repr(e))
-        return repr(e)        
+        print(rep)
+                
     finally:
         con.close()
 
@@ -265,7 +263,7 @@ def getTheory(wordID: int):
         
     except Exception as e:
         print("Except in getTheory")
-        return repr(e)
+        
     finally:
         con.close()
 
@@ -289,10 +287,10 @@ def getUserDetails(userID: int):
         return returnObject
     except Exception as e:
         print("Except")
-        return repr(e)        
+                
     finally:
         con.close()
-    
+
 def getFlashcard(wordID: int):
     con = createConnection()
     cur = con.cursor()
@@ -317,7 +315,7 @@ def getFlashcard(wordID: int):
         return returnObject
     except Exception as e:
         print("Except in getFlashcard")
-        return repr(e)        
+                
     finally:
         con.close()
 
@@ -349,7 +347,7 @@ def getStudentVocab(UserID: int):
         return returnObject
     except Exception as e:
         print("Except")
-        return repr(e)        
+                
     finally:
         con.close()
 
@@ -381,7 +379,7 @@ def getStudentSongVocab(UserID: int, songID: int):
         return returnObject
     except Exception as e:
         print("Except")
-        return repr(e)        
+                
     finally:
         con.close()
 
@@ -400,7 +398,7 @@ def getAllSongs():
         return returnList
     except Exception as e:
         print("Except")
-        return repr(e)        
+                
     finally:
         con.close()
 
@@ -418,8 +416,8 @@ def getSongLyrics(songID: int):
         return returnobj
     except Exception as e:
         print("Except")
-        print(repr(e))
-        return repr(e)        
+        print(rep)
+                
     finally:
         con.close()
 
@@ -445,8 +443,7 @@ def getCurrentTheoryWord(studentID: int, songID: int):
     
     except Exception as e:
         print("Except in getCurrentTheoryWord")
-        print(repr(e))
-        return repr(e)        
+        print(rep)
     finally:
         con.close()    
 
@@ -472,8 +469,7 @@ def getCurrentFlashcards(studentID: int, songID: int):
         return returnArray
     except Exception as e:
         print("Except")
-        print(repr(e))
-        return repr(e)        
+        print(rep)
     finally:
         con.close()
 
@@ -501,8 +497,7 @@ def getQuizWords(studentID: int, songID: int):
     
     except Exception as e:
         print("Except in getQuizWords")
-        print(repr(e))
-        return repr(e)        
+        print(rep)
     finally:
         con.close()    
 
@@ -518,9 +513,8 @@ def getWordFromDefinition(definition: str):
     
     except Exception as e:
         print("Except in getWordFromDefinition")
-        print(repr(e))
+        print(rep)
         print(e)
-        return repr(e)        
     finally:
         con.close()
 
@@ -536,8 +530,8 @@ def getWordFromTerm(term: str):
     
     except Exception as e:
         print("Except in getWordFromTerm")
-        print(repr(e))
-        return repr(e)        
+        print(rep)
+                
     finally:
         con.close()
 
@@ -553,8 +547,8 @@ def getSongFromTitle(title: str):
     
     except Exception as e:
         print("Except in getSongFromTitle")
-        print(repr(e))
-        return repr(e)        
+        print(rep)
+                
     finally:
         con.close()
 
@@ -570,8 +564,8 @@ def getFullLyrics(songID: int):
     
     except Exception as e:
         print("Except in getFullLyrics")
-        print(repr(e))
-        return repr(e)        
+        print(rep)
+                
     finally:
         con.close()
 
@@ -600,8 +594,7 @@ def getLearntWords(studentID: int, songID:int):
     
     except Exception as e:
         print("Except in getLearntWords")
-        print(repr(e))
-        return repr(e)        
+        print(rep)
     finally:
         con.close()  
 
