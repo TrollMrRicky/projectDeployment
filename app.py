@@ -13,7 +13,7 @@ def homepage():
     if request.method == "POST":
         return redirect("/login")
     else:
-        return render_template("home.html", user = session["user"], song = session["song"])
+        return render_template("home.html", user = session.get("user"), song = session.get("user"))
 
 @app.route("/login", methods=["GET", "POST"]) # Route for login
 def login():
@@ -27,7 +27,7 @@ def login():
         if request.form["action"] == "register":
             state = model.registerNewStudent(username, password)
             if state[0] == "Success":
-                session["user"] = username
+                session.get("user") = username
                 session["userID"] = state[1]
                 return redirect("/songSelect")
             elif state == "This user already exists":
@@ -41,13 +41,13 @@ def login():
             if state == "Incorrect Login":
                 return render_template("login.html", message="Incorrect Username or Password")
             else:
-                session["user"] = username
+                session.get("user") = username
                 session["userID"] = state.studentID
                 return redirect("/songSelect")
         else:
             return "bad parameter" # This is impossible (redundant line but whatever)
     else:
-        return render_template("login.html", user = session["user"], song = session["song"])
+        return render_template("login.html", user = session.get("user"), song = session.get("song"))
 
 
 @app.route("/songSelect", methods=["GET", "POST"]) # Route for song select page
@@ -57,13 +57,13 @@ def songSelect():
     if session.get("song") != None:
         return redirect(url_for("menu"))
     if request.method == "POST":
-        session["songID"] = request.form["songs"]
-        session["song"] = model.getSong(session["songID"]).title
+        session.get("songID") = request.form["songs"]
+        session.get("song") = model.getSong(session.get("songID")).title
         return redirect("/menu")
 
     else:
         songList = model.getAllSongs()
-        return render_template("songselect.html", songList = songList, user = session["user"], song = session["song"])
+        return render_template("songselect.html", songList = songList, user = session.get("user"), song = session.get("song"))
     
 @app.route("/menu", methods=["GET", "POST"]) # Main menu route
 def menu():
@@ -78,9 +78,9 @@ def menu():
         session.pop("quizPointer")
 
     #Check which buttons to lock
-    flashCardWords = model.getCurrentFlashcards(session["userID"], session["songID"])
-    quizWord = model.getQuizWords(session["userID"], session["songID"])
-    singWord = model.getLearntWords(session["userID"], session["songID"])
+    flashCardWords = model.getCurrentFlashcards(session["userID"], session.get("songID"))
+    quizWord = model.getQuizWords(session["userID"], session.get("songID"))
+    singWord = model.getLearntWords(session["userID"], session.get("songID"))
     if len(flashCardWords) < 1:
         flashcardEnabled = False
     else: flashcardEnabled = True
@@ -104,7 +104,7 @@ def menu():
             case "karaoke":
                 return redirect("menu/karaoke")
     else:
-        return render_template("menu.html", user = session["user"], song = session["song"], theory=True, flashcard=flashcardEnabled, quiz=quizEnabled, sing=singEnabled)
+        return render_template("menu.html", user = session.get("user"), song = session.get("song"), theory=True, flashcard=flashcardEnabled, quiz=quizEnabled, sing=singEnabled)
 
 
 @app.route("/menu/theory", methods=["GET", "POST"]) # Theory Route
@@ -112,21 +112,21 @@ def theory():
     if session.get("user")  == None:
         return redirect(url_for("homepage")) 
 
-    theory = model.getCurrentTheoryWord(session["userID"], session["songID"])
+    theory = model.getCurrentTheoryWord(session["userID"], session.get("songID"))
     if theory == None:
-        return render_template("theory.html", message="You've finished all the words for this song!", user=session["user"], song=session["song"])
+        return render_template("theory.html", message="You've finished all the words for this song!", user=session.get("user"), song=session.get("song"))
     if request.method == "GET":
-        return render_template("theory.html", term=theory[1], theory=theory[0], user=session["user"], song=session["song"])
+        return render_template("theory.html", term=theory[1], theory=theory[0], user=session.get("user"), song=session.get("song"))
 
     elif request.method == "POST":
         update = model.updateTheoryScore(session["userID"], theory[1].wordID, 1)
         if update == "Success":
-            theory = model.getCurrentTheoryWord(session["userID"], session["songID"])
+            theory = model.getCurrentTheoryWord(session["userID"], session.get("songID"))
             if theory != None:
-                return render_template("theory.html", term=theory[1], theory=theory[0], user=session["user"], song=session["song"])
-            else: return render_template("theory.html", message="You've finished all the words for this song!", user=session["user"], song=session["song"])
+                return render_template("theory.html", term=theory[1], theory=theory[0], user=session.get("user"), song=session.get("song"))
+            else: return render_template("theory.html", message="You've finished all the words for this song!", user=session.get("user"), song=session.get("song"))
         else:
-            return render_template("theory.html", message="error", user=session["user"], song=session["song"])
+            return render_template("theory.html", message="error", user=session.get("user"), song=session.get("song"))
 
 
 
@@ -137,7 +137,7 @@ def logout():
 
 @app.route("/changeSong")
 def changeSong():
-    session["song"] = None
+    session.get("song") = None
     return redirect("/songSelect")
 
 
@@ -146,7 +146,7 @@ def flashcards():
     if session.get("user") == None:
         return redirect(url_for("homepage")) 
     if not session.get("flashcardStuff"):
-        words = model.getCurrentFlashcards(session["userID"], session["songID"])
+        words = model.getCurrentFlashcards(session["userID"], session.get("songID"))
         flashcardArray = []
         for i in words:
             flashcardArray.append(i.wordID)
@@ -161,7 +161,7 @@ def flashcards():
 
     currentWord = model.getWord(flashcardArray[session["flashcardPointer"]])
     currentFlashcard = model.getFlashcard(flashcardArray[session["flashcardPointer"]])
-    return render_template("flashcard.html", word = currentWord.term, definition = currentFlashcard.definition, reading = currentFlashcard.reading, sentence = currentFlashcard.sentence, translated = currentFlashcard.sentenceTl, user=session["user"], song=session["song"])
+    return render_template("flashcard.html", word = currentWord.term, definition = currentFlashcard.definition, reading = currentFlashcard.reading, sentence = currentFlashcard.sentence, translated = currentFlashcard.sentenceTl, user=session.get("user"), song=session.get("song"))
 
 @app.route("/flashcard-check", methods=["POST"])
 def flashcardCheck():
@@ -191,7 +191,7 @@ def flashcardCheck():
 @app.route("/menu/quiz")
 def quiz():
     if not session.get("quizStuff"):
-        words = model.getQuizWords(session["userID"], session["songID"])
+        words = model.getQuizWords(session["userID"], session.get("songID"))
         quizArray = []
         for i in words:
             quizArray.append(i.wordID)
@@ -216,7 +216,7 @@ def quiz():
         if i != correctOption:
             options[i] = model.getWord(optionsArray[i]).term
 
-    return render_template("quiz.html", option1=options[1], option2=options[2], option3=options[3], option4=options[4], user=session["user"], song=session["song"], definition=correctWordFlashcard.definition)
+    return render_template("quiz.html", option1=options[1], option2=options[2], option3=options[3], option4=options[4], user=session.get("user"), song=session.get("song"), definition=correctWordFlashcard.definition)
 
 @app.route("/submit-answer", methods=["POST"])
 def answer():
@@ -242,7 +242,7 @@ def answer():
 
 @app.route("/menu/karaoke/")
 def karaoke():
-    song = model.getSongFromTitle(session["song"])
+    song = model.getSongFromTitle(session.get("song"))
     return render_template("karaoke.html", songID = song.songID)
 
 @app.route("/menu/karaoke/upload", methods=["POST"])
@@ -259,7 +259,7 @@ def save():
         text = text + segment.text
     print("succesfully transcribed")
     #We make the API request
-    lyrics = model.getFullLyrics(model.getSongFromTitle(session["song"]).songID)
+    lyrics = model.getFullLyrics(model.getSongFromTitle(session.get("song")).songID)
 
     if text is not None:
         body = {'text_1': text, 'text_2': lyrics}
