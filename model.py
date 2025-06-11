@@ -246,7 +246,7 @@ def getWord(wordID: int):
     
     except Exception as e:
         print("Except in getWord")
-        print(rep)
+        
                 
     finally:
         con.close()
@@ -416,7 +416,7 @@ def getSongLyrics(songID: int):
         return returnobj
     except Exception as e:
         print("Except")
-        print(rep)
+        
                 
     finally:
         con.close()
@@ -443,7 +443,6 @@ def getCurrentTheoryWord(studentID: int, songID: int):
     
     except Exception as e:
         print("Except in getCurrentTheoryWord")
-        print(rep)
     finally:
         con.close()    
 
@@ -469,7 +468,7 @@ def getCurrentFlashcards(studentID: int, songID: int):
         return returnArray
     except Exception as e:
         print("Except")
-        print(rep)
+        
     finally:
         con.close()
 
@@ -497,7 +496,7 @@ def getQuizWords(studentID: int, songID: int):
     
     except Exception as e:
         print("Except in getQuizWords")
-        print(rep)
+        
     finally:
         con.close()    
 
@@ -513,7 +512,7 @@ def getWordFromDefinition(definition: str):
     
     except Exception as e:
         print("Except in getWordFromDefinition")
-        print(rep)
+        
         print(e)
     finally:
         con.close()
@@ -530,7 +529,7 @@ def getWordFromTerm(term: str):
     
     except Exception as e:
         print("Except in getWordFromTerm")
-        print(rep)
+        
                 
     finally:
         con.close()
@@ -547,7 +546,7 @@ def getSongFromTitle(title: str):
     
     except Exception as e:
         print("Except in getSongFromTitle")
-        print(rep)
+        
                 
     finally:
         con.close()
@@ -563,9 +562,7 @@ def getFullLyrics(songID: int):
         return lyrics
     
     except Exception as e:
-        print("Except in getFullLyrics")
-        print(rep)
-                
+        print("Except in getFullLyrics")        
     finally:
         con.close()
 
@@ -594,7 +591,6 @@ def getLearntWords(studentID: int, songID:int):
     
     except Exception as e:
         print("Except in getLearntWords")
-        print(rep)
     finally:
         con.close()  
 
