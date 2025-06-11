@@ -82,16 +82,16 @@ def menu():
     quizWord = model.getQuizWords(session.get("userID"), session.get("songID"))
     singWord = model.getLearntWords(session.get("userID"), session.get("songID"))
     if len(flashCardWords) < 1:
-        flashcardEnabled = False
-    else: flashcardEnabled = True
+        flashcardEnabled = 1
+    else: flashcardEnabled = 0
 
     if len(quizWord) < 10:
-        quizEnabled = False
-    else: quizEnabled = True
+        quizEnabled = 10 - len(quizWord)
+    else: quizEnabled = 0
 
     if len(singWord) < 10:
-        singEnabled = False
-    else: singEnabled = True
+        singEnabled = 10 - len(singWord)
+    else: singEnabled = 0
     
     if request.method == "POST":
         match request.form["action"]:
@@ -145,7 +145,7 @@ def changeSong():
 def flashcards():
     if session.get("user") == None:
         return redirect(url_for("homepage")) 
-    if not session.get("flashcardStuff"):
+    if session.get("flashcardStuff") is None:
         words = model.getCurrentFlashcards(session["userID"], session.get("songID"))
         flashcardArray = []
         for i in words:
@@ -189,7 +189,7 @@ def flashcardCheck():
 
 @app.route("/menu/quiz")
 def quiz():
-    if not session.get("quizStuff"):
+    if session.get("quizStuff") is None:
         words = model.getQuizWords(session["userID"], session.get("songID"))
         quizArray = []
         for i in words:
@@ -198,13 +198,13 @@ def quiz():
         session["quizStuff"] = quizArray
         session["quizPointer"] = 0
     else:
-        quizArray = session["quizStuff"]
+        quizArray = session["quizStuff"] 
 
-    optionsArray = quizArray
+    
 
     correctWord = model.getWord(quizArray[session["quizPointer"]])
+    optionsArray = random.sample(quizArray, len(quizArray))
     optionsArray.remove(correctWord.wordID)
-    random.shuffle(optionsArray)
     correctWordFlashcard = model.getFlashcard(correctWord.wordID)
 
     correctOption = random.randint(1, 4)
@@ -231,6 +231,8 @@ def answer():
     else:
         print("its wrong")
 
+    print(session["quizPointer"])
+    print(len(session["quizStuff"]))
     if session["quizPointer"] >= len(session["quizStuff"]) - 1:
         #we finished all the words for now
         return jsonify({"finished": True, "correctTerm": model.getWord(correctResponse).term})
@@ -242,7 +244,7 @@ def answer():
 @app.route("/menu/karaoke/")
 def karaoke():
     song = model.getSongFromTitle(session.get("song"))
-    return render_template("karaoke.html", songID = song.songID)
+    return render_template("karaoke.html", songID = song.songID, user=session.get("user"), song=session.get("song"))
 
 @app.route("/menu/karaoke/upload", methods=["POST"])
 def save():
