@@ -107,4 +107,5 @@ button:hover {
     text-align: center;
     max-width: 90%;
     word-wrap: break-word;
+    outline: black;
 }

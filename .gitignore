@@ -1,7 +1,7 @@
+*.db
 *.sqbpro
 *.sql
 lyricmapping.csv
+/static/assets
 /uploads
 /flaskapp
-/__pycache__
-/.vscode

@@ -109,7 +109,7 @@ def menu():
 
 @app.route("/menu/theory", methods=["GET", "POST"]) # Theory Route
 def theory():
-    if session.get("user")  == None:
+    if session.get("user") == None or session.get("song") == None:
         return redirect(url_for("homepage")) 
 
     theory = model.getCurrentTheoryWord(session["userID"], session.get("songID"))
@@ -143,7 +143,7 @@ def changeSong():
 
 @app.route("/menu/flashcards/card")
 def flashcards():
-    if session.get("user") == None:
+    if session.get("user") == None or session.get("song") == None:
         return redirect(url_for("homepage")) 
     if session.get("flashcardStuff") is None:
         words = model.getCurrentFlashcards(session["userID"], session.get("songID"))
@@ -189,6 +189,9 @@ def flashcardCheck():
 
 @app.route("/menu/quiz")
 def quiz():
+    if session.get("user") == None or session.get("song") == None:
+        return redirect(url_for("homepage")) 
+
     if session.get("quizStuff") is None:
         words = model.getQuizWords(session["userID"], session.get("songID"))
         quizArray = []
@@ -228,6 +231,7 @@ def answer():
     if isCorrect:
         model.updateQuizScore(session["userID"], correctResponse, 1)
         session["quizStuff"] = quizArray
+        print("its right")
     else:
         print("its wrong")
 
@@ -243,6 +247,8 @@ def answer():
 
 @app.route("/menu/karaoke/")
 def karaoke():
+    if session.get("user") == None or session.get("song") == None:
+        return redirect(url_for("homepage")) 
     song = model.getSongFromTitle(session.get("song"))
     return render_template("karaoke.html", songID = song.songID, user=session.get("user"), song=session.get("song"))
 
